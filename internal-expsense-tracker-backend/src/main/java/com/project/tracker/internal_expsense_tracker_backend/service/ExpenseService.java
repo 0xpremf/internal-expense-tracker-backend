@@ -2,10 +2,14 @@ package com.project.tracker.internal_expsense_tracker_backend.service;
 
 
 import com.project.tracker.internal_expsense_tracker_backend.Repo.ExpenseRepo;
-import com.project.tracker.internal_expsense_tracker_backend.domain.Expense;
-import com.project.tracker.internal_expsense_tracker_backend.domain.ExpenseStatus;
-import com.project.tracker.internal_expsense_tracker_backend.domain.User;
+import com.project.tracker.internal_expsense_tracker_backend.domain.*;
+import com.project.tracker.internal_expsense_tracker_backend.dto.CreateExpenseRequest;
 import com.project.tracker.internal_expsense_tracker_backend.dto.ExpenseResponse;
+import com.project.tracker.internal_expsense_tracker_backend.dto.PagedEnvelope;
+import com.project.tracker.internal_expsense_tracker_backend.dto.UpdateExpenseRequest;
+import com.project.tracker.internal_expsense_tracker_backend.exceptions.ForbiddenActionException;
+import com.project.tracker.internal_expsense_tracker_backend.exceptions.InvalidStateTransitionException;
+import com.project.tracker.internal_expsense_tracker_backend.exceptions.ResourceNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -137,7 +141,7 @@ public class ExpenseService {
             User currentUser) {
 
         // Enforce pagination limits (default 20, max 100)
-        int effectiveLimit = Math.min(Math.max(limit, 1), 100);
+        int effectiveLimit = Math.clamp(limit, 1, 100);
         int effectivePage = Math.max(page, 1); // 1-indexed for client API
         int zeroBasedPage = effectivePage - 1;
 
