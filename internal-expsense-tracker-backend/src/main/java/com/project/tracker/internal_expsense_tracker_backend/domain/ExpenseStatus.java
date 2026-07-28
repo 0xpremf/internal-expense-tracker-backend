@@ -7,7 +7,7 @@ public enum ExpenseStatus {
     PENDING,
     APPROVED,
     REJECTED,
-    DRAFT;
+    DRAFT, SUBMITTED;
 
     @JsonCreator
     public static ExpenseStatus fromString(String s){
@@ -16,5 +16,7 @@ public enum ExpenseStatus {
     }
 
     @JsonValue
-    public String toString(){return name().toLowerCase();}
+    public String toValue(){return name().toLowerCase();}
+
+
 }
