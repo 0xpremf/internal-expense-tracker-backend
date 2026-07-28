@@ -1,21 +1,24 @@
 package com.project.tracker.internal_expsense_tracker_backend.dto;
 
-import com.project.tracker.internal_expsense_tracker_backend.domain.Role;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
-    private String token;
-    private Long id;
-    private String username;
-    private String email;
-    private Role role;
+@Builder
+public class DepartmentBudgetResponse {
     private Long departmentId;
     private String departmentName;
+    private String month; // e.g. "2026-07"
+    private BigDecimal budget;
+    private BigDecimal spent;
+    private BigDecimal remaining;
+    private boolean overBudget;
+
 }

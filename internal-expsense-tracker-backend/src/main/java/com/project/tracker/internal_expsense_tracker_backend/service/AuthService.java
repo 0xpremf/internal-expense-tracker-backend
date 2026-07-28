@@ -7,14 +7,18 @@ import com.project.tracker.internal_expsense_tracker_backend.domain.User;
 import com.project.tracker.internal_expsense_tracker_backend.dto.AuthResponse;
 import com.project.tracker.internal_expsense_tracker_backend.dto.LoginRequest;
 import com.project.tracker.internal_expsense_tracker_backend.dto.RegisterRequest;
+import com.project.tracker.internal_expsense_tracker_backend.exceptions.ResourceNotFoundException;
 import com.project.tracker.internal_expsense_tracker_backend.security.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +34,7 @@ public class AuthService {
         return AuthResponse.builder()
                 .token(token)
                 .id(user.getId())
-                .name(user.getUsername())
+                .username(user.getUsername())
                 .email(user.getEmail())
                 .role(user.getRole())
                 .departmentId(user.getDepartment() != null ? user.getDepartment().getId() : null)
@@ -72,4 +76,13 @@ public class AuthService {
         return buildAuthResponse(user, token);
 
     }
+    @Transactional (readOnly = true)
+    public User getLoggedInUser() {
+        String email = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getName();
+        return userRepo.findByEmail(email)
+                .orElseThrow(()-> new ResourceNotFoundException("User Not Found"));
+    }
+
+
+
 }

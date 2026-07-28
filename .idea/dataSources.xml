@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="expensedb@localhost" uuid="ae47cf46-dcf1-4be3-9938-c09f068d3e1f">
+    <data-source source="LOCAL" name="expensedb@localhost" uuid="4776157f-4e94-440b-9d8b-33d4820b3003">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <imported>true</imported>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/expensedb</jdbc-url>
       <jdbc-additional-properties>
