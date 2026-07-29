@@ -3,7 +3,7 @@ package com.project.tracker.internal_expsense_tracker_backend.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -26,6 +26,7 @@ public class JwtUtil {
     public String createToken(String email){
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiryMs);
+
         return Jwts.builder()
                 .subject(email)
                 .issuedAt(now)
@@ -50,6 +51,7 @@ public class JwtUtil {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+
         return claims.getSubject();
     }
 

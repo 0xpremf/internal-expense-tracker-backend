@@ -12,10 +12,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Builder
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ExpenseResponse {
     private Long id;
     private String title;

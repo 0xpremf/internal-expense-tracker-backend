@@ -11,7 +11,7 @@ import com.project.tracker.internal_expsense_tracker_backend.exceptions.Resource
 import com.project.tracker.internal_expsense_tracker_backend.security.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
+import com.project.tracker.internal_expsense_tracker_backend.exceptions.BadRequestException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,12 +41,13 @@ public class AuthService {
                 .departmentName(user.getDepartment() != null ? user.getDepartment().getName() : null)
                 .build();
     }
-
+    @Transactional
     public AuthResponse register(@Valid RegisterRequest registerRequest) throws BadRequestException {
         if(userRepo.existsByEmail(registerRequest.getEmail())) {
             throw new BadRequestException("Email already exists");
 
         }
+
 
         Department department = deptRepo.findById(registerRequest.getDepartmentId()).orElseThrow(() -> new BadRequestException("Department not found"));
 
@@ -66,7 +67,7 @@ public class AuthService {
     public AuthResponse login(@Valid LoginRequest loginRequest) {
         String email = loginRequest.getEmail().toLowerCase();
 
-        User user = userRepo.findByEmail(loginRequest.getEmail()).orElseThrow(()-> new BadCredentialsException("Invalid Email Id."));
+        User user = userRepo.findByEmail(email).orElseThrow(()-> new BadCredentialsException("Invalid Email Id."));
 
         if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword_hash())) {
             throw new BadCredentialsException("Invalid Password.");

@@ -58,6 +58,7 @@ public class ExpenseService {
 
         if (request.isSubmitNow()) {
             expense = workflowService.submitExpense(expense.getId(), author);
+
         } else {
             // Run initial risk score assessment for draft
             riskAnalysisEngine.analyzeExpense(expense);
@@ -69,8 +70,22 @@ public class ExpenseService {
 
     @Transactional(readOnly = true)
     public ExpenseResponse getExpenseById(Long id, User currentUser) {
+
         Expense expense = expenseRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Expense not found with ID: " + id));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Expense not found"));
+
+        System.out.println("===== DEBUG =====");
+        System.out.println("Logged User ID: " + currentUser.getId());
+        System.out.println("Logged User Role: " + currentUser.getRole());
+        System.out.println("Logged User Dept: "
+                + currentUser.getDepartment().getId());
+
+        System.out.println("Expense ID: " + expense.getId());
+        System.out.println("Expense Author ID: "
+                + expense.getAuthor().getId());
+        System.out.println("Expense Dept: "
+                + expense.getDepartment().getId());
 
         validateViewAccess(expense, currentUser);
 

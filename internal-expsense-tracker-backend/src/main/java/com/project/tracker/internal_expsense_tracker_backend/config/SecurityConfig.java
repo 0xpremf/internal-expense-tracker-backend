@@ -28,10 +28,10 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
-
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable) // disabling it because we use jwt token.
+                .csrf( csrf-> csrf.disable()) // disabling it because we use jwt token.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
